@@ -23,7 +23,7 @@ In simple words:
 
 ## Lab story
 
-You joined the SRE team at a company that runs a set of microservices. The team already deploys a VictoriaMetrics stack via Docker Compose — it collects metrics and logs from every service — but no one has built a tool that pulls it all together. The team lead wants a small command-line agent that can autonomously investigate a system anomaly by querying the observability stack and report its findings in plain language.
+You joined the SRE team at a company that runs a set of microservices. The team already deploys a VictoriaMetrics stack via Docker Compose — it collects metrics and logs from every service — but no one has built a tool that pulls it all together. The team lead wants a small command-line agent that can autonomously investigate a system anomaly by querying the observability stack and report its findings in plain language. The agent will use the Qwen3-Coder model through the free Qwen API, which provides 1000 requests per day — enough for development and testing.
 
 A senior engineer explains the assignment:
 

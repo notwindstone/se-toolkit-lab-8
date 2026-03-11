@@ -41,7 +41,7 @@ No issues found.
 
 ### D8. Practical feasibility
 
-1. **[Medium]** — [Task 3](../../lab-plan.md#task-3--implement-the-agentic-loop), lines 67–79. The task requires calling an LLM API, but the plan does not mention how students will access it (provided API key, free-tier service, locally-running model). If a paid account is needed, this conflicts with the "no paid accounts" principle (convention Section 9.8). **Suggested fix:** Add a note in the lab story or Task 3 summary specifying how the LLM is provisioned (e.g., "a local Ollama instance included in the Docker Compose file" or "an API key provided via the course portal").
+1. ~~**[Medium]** — [Task 3](../../lab-plan.md#task-3--implement-the-agentic-loop), lines 67–79. The task requires calling an LLM API, but the plan does not mention how students will access it (provided API key, free-tier service, locally-running model). If a paid account is needed, this conflicts with the "no paid accounts" principle (convention Section 9.8). **Suggested fix:** Add a note in the lab story or Task 3 summary specifying how the LLM is provisioned (e.g., "a local Ollama instance included in the Docker Compose file" or "an API key provided via the course portal").~~
 
 ### D9. Student experience level fit
 
@@ -64,10 +64,10 @@ No empty sections found.
 | Category | Count |
 |---|---|
 | Lab plan [High] | 0 |
-| Lab plan [Medium] | 4 |
+| Lab plan [Medium] | 3 |
 | Lab plan [Low] | 1 |
 | TODOs | 0 |
 | Empty sections | 0 |
-| **Total** | **5** |
+| **Total** | **4** |
 
-**Overall:** The lab plan is well-structured with clear learning outcomes, proper Bloom's taxonomy coverage, a coherent workplace narrative, and well-sequenced tasks that build naturally from exploration through implementation to agentic reasoning. The main issues are three task summaries exceeding the two-to-four-sentence limit (D7) and a missing note about how students access the LLM API (D8). One low-severity finding notes a potential cognitive jump into LLM tool-calling without prior introduction (D9). Addressing the summary lengths and clarifying the LLM provisioning strategy would bring the plan into full compliance.
+**Overall:** The lab plan is well-structured with clear learning outcomes, proper Bloom's taxonomy coverage, a coherent workplace narrative, and well-sequenced tasks that build naturally from exploration through implementation to agentic reasoning. The remaining issues are three task summaries exceeding the two-to-four-sentence limit (D7) and one low-severity finding noting a potential cognitive jump into LLM tool-calling without prior introduction (D9). Addressing the summary lengths would bring the plan into full compliance.
