@@ -19,16 +19,16 @@ ENV UV_NO_DEV=1
 ENV UV_PYTHON_DOWNLOADS=0
 
 WORKDIR /app
+COPY --from=workspace pyproject.toml uv.lock /app/
+COPY pyproject.toml /app/client-telegram-bot/pyproject.toml
+
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,from=workspace,source=uv.lock,target=uv.lock \
-    --mount=type=bind,from=workspace,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-install-workspace --package client-telegram-bot
+    uv sync --frozen --no-install-workspace --package lms-client-telegram-bot
 
 COPY . /app/client-telegram-bot
-COPY --from=workspace pyproject.toml uv.lock /app/
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --package client-telegram-bot
+    uv sync --frozen --package lms-client-telegram-bot
 
 # ---
 # Stage 2: use a final image without uv
