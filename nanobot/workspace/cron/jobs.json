@@ -1,4 +1,125 @@
 {
   "version": 1,
-  "jobs": []
+  "jobs": [
+    {
+      "id": "eaee922e",
+      "name": "Run a health check on the LMS ",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "atMs": null,
+        "everyMs": 120000,
+        "expr": null,
+        "tz": null
+      },
+      "payload": {
+        "kind": "agent_turn",
+        "message": "Run a health check on the LMS backend: 1) Call logs_error_count for \"Learning Management Service\" over the last 2 minutes. 2) If errors exist, call logs_search with query 'service.name:\"Learning Management Service\" severity:ERROR _time:2m' and inspect the most recent error. 3) If a trace_id is found, call traces_get to see what failed. 4) Post a short summary to the webchat (chat_id: 234d8ece-5e7a-4037-a30b-f27ee57fbda3). If no errors, say the system looks healthy. If errors, summarize the root cause concisely.",
+        "deliver": true,
+        "channel": "webchat",
+        "to": "234d8ece-5e7a-4037-a30b-f27ee57fbda3"
+      },
+      "state": {
+        "nextRunAtMs": 1775255753337,
+        "lastRunAtMs": 1775255615134,
+        "lastStatus": "ok",
+        "lastError": null,
+        "runHistory": [
+          {
+            "runAtMs": 1775254611773,
+            "status": "ok",
+            "durationMs": 45565,
+            "error": null
+          },
+          {
+            "runAtMs": 1775254777341,
+            "status": "ok",
+            "durationMs": 15890,
+            "error": null
+          },
+          {
+            "runAtMs": 1775254913233,
+            "status": "ok",
+            "durationMs": 16126,
+            "error": null
+          },
+          {
+            "runAtMs": 1775255049361,
+            "status": "ok",
+            "durationMs": 33280,
+            "error": null
+          },
+          {
+            "runAtMs": 1775255202643,
+            "status": "ok",
+            "durationMs": 17490,
+            "error": null
+          },
+          {
+            "runAtMs": 1775255340135,
+            "status": "ok",
+            "durationMs": 16274,
+            "error": null
+          },
+          {
+            "runAtMs": 1775255476426,
+            "status": "ok",
+            "durationMs": 18706,
+            "error": null
+          },
+          {
+            "runAtMs": 1775255615134,
+            "status": "ok",
+            "durationMs": 18203,
+            "error": null
+          }
+        ]
+      },
+      "createdAtMs": 1775254491772,
+      "updatedAtMs": 1775255633337,
+      "deleteAfterRun": false
+    },
+    {
+      "id": "733e2777",
+      "name": "HEALTH_CHECK: Run a health che",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "atMs": null,
+        "everyMs": 120000,
+        "expr": null,
+        "tz": null
+      },
+      "payload": {
+        "kind": "agent_turn",
+        "message": "HEALTH_CHECK: Run a health check on the Learning Management Service. Check for errors in the last 2 minutes using logs_error_count (service=\"Learning Management Service\", minutes=2). If errors exist, search logs and inspect traces. Post a short summary to this chat. If no errors, say the system looks healthy.",
+        "deliver": true,
+        "channel": "webchat",
+        "to": "2d6bf5bb-d009-4f5d-be42-a321e63583a7"
+      },
+      "state": {
+        "nextRunAtMs": 1775255710773,
+        "lastRunAtMs": 1775255579143,
+        "lastStatus": "ok",
+        "lastError": null,
+        "runHistory": [
+          {
+            "runAtMs": 1775255442619,
+            "status": "ok",
+            "durationMs": 16523,
+            "error": null
+          },
+          {
+            "runAtMs": 1775255579143,
+            "status": "ok",
+            "durationMs": 11630,
+            "error": null
+          }
+        ]
+      },
+      "createdAtMs": 1775255322617,
+      "updatedAtMs": 1775255590773,
+      "deleteAfterRun": false
+    }
+  ]
 }
