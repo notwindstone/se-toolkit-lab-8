@@ -80,11 +80,28 @@ The skill prompt taught the agent to call `lms_labs` first when a lab-specific m
 
 ## Task 2A — Deployed agent
 
-<!-- Paste a short nanobot startup log excerpt showing the gateway started inside Docker -->
+```
+Using config: /app/nanobot/config.resolved.json
+🐈 Starting nanobot gateway version 0.1.4.post5 on port 18790...
+✓ Channels enabled: webchat
+✓ Heartbeat: every 1800s
+WebChat channel enabled
+MCP server 'lms': connected, 9 tools registered
+MCP server 'webchat': connected, 1 tools registered
+Agent loop started
+```
+
+WebSocket test — `What labs are available?` via `ws://localhost:42002/ws/chat?access_key=...`:
+```json
+{"type":"text","content":"Here are the available labs:\n\n| # | Lab Title |\n|---|-----------|\n| 1 | Lab 01 – Products, Architecture & Roles |\n| 2 | Lab 02 — Run, Fix, and Deploy a Backend Service |\n| ... |\n\nLet me know..."}
+```
 
 ## Task 2B — Web client
 
-<!-- Screenshot of a conversation with the agent in the Flutter web app -->
+The Flutter web client is accessible at `/flutter`, protected by `NANOBOT_ACCESS_KEY`.
+The agent answers with real LMS/backend data and renders structured lab choice UI when asked `"Show me the scores"` without specifying a lab.
+
+![Flutter chat conversation showing structured lab choice UI](instructors/file-reviews/flutter-chat-screenshot.png)
 
 ## Task 3A — Structured logging
 
