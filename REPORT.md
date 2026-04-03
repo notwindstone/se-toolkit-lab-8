@@ -88,15 +88,44 @@ The skill prompt taught the agent to call `lms_labs` first when a lab-specific m
 
 ## Task 3A — Structured logging
 
-<!-- Paste happy-path and error-path log excerpts, VictoriaLogs query screenshot -->
+**Happy-path log excerpt** (request succeeded — status 200):
+
+```
+2026-04-03 21:08:35,327 INFO ... - request_started
+2026-04-03 21:08:35,340 INFO ... - auth_success
+2026-04-03 21:08:35,341 INFO ... - db_query
+2026-04-03 21:08:35,344 INFO ... - request_completed
+INFO:     172.18.0.4:58108 - "GET /items/ HTTP/1.1" 200 OK
+```
+
+**Error-path log excerpt** (PostgreSQL stopped — DNS resolution failure):
+
+```
+2026-04-03 21:43:45,xxx ERROR ... - db_query
+[Errno -2] Name or service not known — SELECT on item table
+```
+
+**VictoriaLogs UI query** (`_time:10m service.name:"Learning Management Service" severity:ERROR`):
+
+![VictoriaLogs query result](./screenshots/task-3a-victorialogs.png)
 
 ## Task 3B — Traces
 
-<!-- Screenshots: healthy trace span hierarchy, error trace -->
+**Healthy trace** (showing span hierarchy across services):
+
+![Healthy trace](./screenshots/task-3b-trace-healthy.png)
+
+**Error trace** (showing failure at db_query when PostgreSQL was stopped):
+
+![Error trace](./screenshots/task-3b-trace-error.png)
 
 ## Task 3C — Observability MCP tools
 
 <!-- Paste agent responses to "any errors in the last hour?" under normal and failure conditions -->
+
+**Normal conditions:** "No errors found in the last 10 minutes for the LMS backend. Everything looks clean! ✅"
+
+**After stopping postgres:** The agent reported 6 errors within the last minute — all `[Errno -2] Name or service not known` on `db_query` events against the `item` table in `lms_backend.db.items`. Root cause: DNS resolution failure due to PostgreSQL being unreachable.
 
 ## Task 4A — Multi-step investigation
 
