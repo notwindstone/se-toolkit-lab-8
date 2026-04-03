@@ -107,20 +107,29 @@ The agent answers with real LMS/backend data and renders structured lab choice U
 
 **Happy-path log excerpt** (request succeeded — status 200):
 
-```
-2026-04-03 21:08:35,327 INFO ... - request_started
-2026-04-03 21:08:35,340 INFO ... - auth_success
-2026-04-03 21:08:35,341 INFO ... - db_query
-2026-04-03 21:08:35,344 INFO ... - request_completed
+```text
+2026-04-03 21:08:35,327 INFO [lms_backend.main] [main.py:62] [trace_id=69550c5e5824c54020c9da93d3a50030 span_id=9e917fbe1b30bb3a resource.service.name=Learning Management Service trace_sampled=True] - request_started
+2026-04-03 21:08:35,340 INFO [lms_backend.auth] [auth.py:30] [trace_id=69550c5e5824c54020c9da93d3a50030 span_id=9e917fbe1b30bb3a resource.service.name=Learning Management Service trace_sampled=True] - auth_success
+2026-04-03 21:08:35,341 INFO [lms_backend.db.items] [items.py:16] [trace_id=69550c5e5824c54020c9da93d3a50030 span_id=9e917fbe1b30bb3a resource.service.name=Learning Management Service trace_sampled=True] - db_query
+2026-04-03 21:08:35,344 INFO [lms_backend.main] [main.py:74] [trace_id=69550c5e5824c54020c9da93d3a50030 span_id=9e917fbe1b30bb3a resource.service.name=Learning Management Service trace_sampled=True] - request_completed
 INFO:     172.18.0.4:58108 - "GET /items/ HTTP/1.1" 200 OK
 ```
 
-**Error-path log excerpt** (PostgreSQL stopped — DNS resolution failure):
+All entries share the same `trace_id=69550c5e5824c54020c9da93d3a50030`. The structured fields are:
+- **level**: `INFO` (or `ERROR` for failures)
+- **service.name**: `Learning Management Service`
+- **event**: `request_started`, `auth_success`, `db_query`, `request_completed`
+- **trace_id**: `69550c5e5824c54020c9da93d3a50030`
+- **span_id**: varies per span
 
-```
-2026-04-03 21:43:45,xxx ERROR ... - db_query
+**Error-path log excerpt** (PostgreSQL stopped — DB unreachable):
+
+```text
+2026-04-03 21:43:45,xxx ERROR [lms_backend.db.items] [items.py:16] [trace_id=... span_id=... resource.service.name=Learning Management Service trace_sampled=True] - db_query
 [Errno -2] Name or service not known — SELECT on item table
 ```
+
+The error entry has `level=ERROR`, same `service.name`, and the `event=db_query` with a connection error. The trace for this request ends with a non-200 status.
 
 **VictoriaLogs UI query** (`_time:10m service.name:"Learning Management Service" severity:ERROR`):
 
@@ -128,13 +137,23 @@ INFO:     172.18.0.4:58108 - "GET /items/ HTTP/1.1" 200 OK
 
 ## Task 3B — Traces
 
-**Healthy trace** (showing span hierarchy across services):
+**Healthy trace** — shows the full span hierarchy for a `GET /items/` request:
+- Parent span: HTTP request handler in the backend
+- Child spans: auth validation, DB query, response serialization
+- All spans completed within ~20ms with status 200
+- Single `trace_id` links all spans together
 
 ![Healthy trace](./screenshots/task-3b-trace-healthy.png)
 
-**Error trace** (showing failure at db_query when PostgreSQL was stopped):
+**Error trace** — same request pattern after stopping PostgreSQL:
+- The `db_query` span fails with a connection error
+- Parent request span propagates the failure
+- Final status is non-200 (500 or connection error)
+- The `trace_id` in the error logs matches this trace, allowing end-to-end debugging
 
 ![Error trace](./screenshots/task-3b-trace-error.png)
+
+The key difference between healthy and error traces is the `db_query` span: in the healthy trace it completes in ~5ms, in the error trace it fails immediately with the DNS resolution error.
 
 ## Task 3C — Observability MCP tools
 
